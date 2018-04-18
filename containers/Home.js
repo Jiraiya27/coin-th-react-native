@@ -50,6 +50,7 @@ export default class Home extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <HeaderComponent />
         <FlatList 
           style={styles.list} 
           data={this.state.allKeys}
@@ -61,7 +62,6 @@ export default class Home extends React.Component {
               onRefresh={this.onRefresh}
             />
           }
-          ListHeaderComponent={<HeaderComponent />}
         />
       </View>
     )
@@ -74,13 +74,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
+    flex: 1
   },
   list: {
-    width: '100%'
+    width: '100%',
+    paddingTop: 10,
+    marginBottom: 10
   },
   listHeader: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'aliceblue',
+    paddingTop: 5,
+    paddingBottom: 5
   }
 })

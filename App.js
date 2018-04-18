@@ -30,6 +30,13 @@ import Details from './containers/Details'
 const App = StackNavigator({
   Home: { screen: Home },
   Details: { screen: Details }
+},{
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: 'rgb(77, 217, 148)',
+    },
+    headerTintColor: 'white'
+  }
 })
 
 export default App

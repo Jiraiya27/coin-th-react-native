@@ -1,5 +1,6 @@
 import React from 'react'
-import { View, FlatList, StyleSheet, RefreshControl, Text } from 'react-native'
+import { View, FlatList, StyleSheet, RefreshControl, Text, AsyncStorage } from 'react-native'
+import _ from 'lodash'
 import ListItem from '../components/ListItem'
 
 const HeaderComponent = (props) => (
@@ -14,14 +15,20 @@ export default class Home extends React.Component {
   state = {
     all: {},
     allKeys: [],
-    refreshing: false
+    refreshing: false,
+    favorites: []
   }
 
   static navigationOptions = {
     title: 'Home'
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const favoritesString = await AsyncStorage.getItem('favorites') || ''
+    const favorites = favoritesString.split(',')
+    if (Array.isArray(favorites)) {
+      this.setState({ favorites })
+    }
     this.getAllBxData()
   }
 
@@ -48,22 +55,29 @@ export default class Home extends React.Component {
   }
 
   setFavorite = (pairing_id) => {
-    let allKeys = [...this.state.allKeys]
-    const index = allKeys.indexOf(pairing_id)
-    allKeys.splice(index, 1)
-    allKeys.unshift(pairing_id)
+    const index = this.state.favorites.indexOf(pairing_id)
+    let favorites = [...this.state.favorites]
+    if (index === -1) {
+      favorites.unshift(pairing_id)
+    } else {
+      favorites.splice(index, 1)
+      favorites.unshift(pairing_id)
+    }
     return () => {
-      this.setState({ allKeys })      
+      this.setState({ favorites })
+      const favoritesString = favorites.join(',')
+      AsyncStorage.setItem('favorites', favoritesString)
     }
   }
 
   render() {
+    let sortedKeys = _.union(this.state.favorites, this.state.allKeys)
     return (
       <View style={styles.container}>
         <HeaderComponent />
         <FlatList 
           style={styles.list} 
-          data={this.state.allKeys}
+          data={sortedKeys}
           extraData={this.state}
           renderItem={id => {
             return <ListItem

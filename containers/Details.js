@@ -39,36 +39,21 @@ export default class Details extends React.Component {
     return <TabBar
             {...props}
             renderLabel={this.renderSingleLineText}
-            // tabStyle={{ backgroundColor: '#fff' }}
             style={{ backgroundColor: 'rgb(249,249,249)'}}
             indicatorStyle={{ backgroundColor: 'rgb(104,104,104)', height: 3 }} 
           />
   }
-  // renderHeader = props => {
-  //   return (
-  //     <View style={styles.tabBar}>
-  //       {props.navigationState.routes.map((route, i) => {
-  //         return (
-  //           <TouchableWithoutFeedback
-  //             key={"tab"+i}
-  //             style={styles.tabItem}
-  //             onPress={() => this.setState({ index: i })}
-  //           >
-  //             <View style={styles.tabItem}>
-  //               <Text adjustsFontSizeToFit numberOfLines={1}>{route.title}</Text>
-  //             </View>
-  //           </TouchableWithoutFeedback>
-  //         )
-  //       })}
-  //     </View>
-  //   )
-  // }
 
-  renderScene = SceneMap({
-    trade: LatestTrades,
-    buy: Orders,
-    sell: Orders
-  })
+  renderScene = ({ route }) => {
+    switch (route.key) {
+      case 'trade':
+        return <LatestTrades
+                  params={this.props.navigation.state.params}
+                />
+      default:
+        return null
+    }
+  }
   
   render() {
     return (

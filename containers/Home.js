@@ -4,9 +4,9 @@ import ListItem from '../components/ListItem'
 
 const HeaderComponent = (props) => (
   <View style={styles.listHeader}>
-    <Text style={{ flex: 1, textAlign: 'center' }}>Currency</Text>
-    <Text style={{ flex: 1, textAlign: 'center' }}>24H Volume</Text>
-    <Text style={{ flex: 1, textAlign: 'center' }}>24H Change</Text>
+    <Text style={styles.headerText}>Currency</Text>
+    <Text style={styles.headerText}>24H Volume</Text>
+    <Text style={styles.headerText}>24H Change</Text>
   </View>
 )
 
@@ -47,6 +47,16 @@ export default class Home extends React.Component {
     this.getAllBxData()
   }
 
+  setFavorite = (pairing_id) => {
+    let allKeys = [...this.state.allKeys]
+    const index = allKeys.indexOf(pairing_id)
+    allKeys.splice(index, 1)
+    allKeys.unshift(pairing_id)
+    return () => {
+      this.setState({ allKeys })      
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -54,7 +64,13 @@ export default class Home extends React.Component {
         <FlatList 
           style={styles.list} 
           data={this.state.allKeys}
-          renderItem={id => <ListItem {...this.state.all[id.item]} navigation={this.props.navigation} />}
+          extraData={this.state}
+          renderItem={id => {
+            return <ListItem
+                    {...this.state.all[id.item]}
+                    navigation={this.props.navigation}
+                    setFavorite={this.setFavorite(id.item)} />
+          }}
           keyExtractor={(item, index) => index.toString()}
           refreshControl={
             <RefreshControl 
@@ -88,5 +104,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'aliceblue',
     paddingTop: 5,
     paddingBottom: 5
+  },
+  headerText: {
+    flex: 1,
+    textAlign: 'center'
   }
 })

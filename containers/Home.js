@@ -77,7 +77,7 @@ export default class Home extends React.Component {
         <HeaderComponent />
         <FlatList 
           style={styles.list} 
-          data={sortedKeys}
+          data={this.state.allKeys.length > 0 ? sortedKeys : null}
           extraData={this.state}
           renderItem={id => {
             return <ListItem

@@ -45,11 +45,24 @@ export default class Details extends React.Component {
   }
 
   renderScene = ({ route }) => {
+    const { pairing_id, secondary_currency, primary_currency } = this.props.navigation.state.params
     switch (route.key) {
       case 'trade':
         return <LatestTrades
                   params={this.props.navigation.state.params}
                 />
+      case 'buy':
+        return <Orders 
+                  pairing_id={pairing_id}
+                  secondary_currency={secondary_currency}
+                  primary_currency={primary_currency}
+                  type={'bids'} />
+      case 'sell':
+        return <Orders
+                  pairing_id={pairing_id}
+                  secondary_currency={secondary_currency}
+                  primary_currency={primary_currency}
+                  type={'asks'} />
       default:
         return null
     }

@@ -72,7 +72,6 @@ export default class LatestTrades extends React.Component {
   render() {
     const { secondary_currency, primary_currency, type, bids, asks } = this.state
     const data = type === 'bids' ? bids : asks
-    console.log('Orders data:', data)
     return (
       <View style={styles.container}>
         <HeadComponent secondary_currency={secondary_currency} primary_currency={primary_currency}/>

@@ -6,7 +6,7 @@ const HeadComponent = props => {
     <View style={[styles.padding, styles.headStyle]}>
       <Text style={{ flex: 1, textAlign: 'left' }}>Date/Time</Text>
       <Text style={{ flex: 1, textAlign: 'center' }}>Rate</Text>
-      <Text style={{ flex: 1, textAlign: 'right' }}>Volume ฿</Text>
+      <Text style={{ flex: 1, textAlign: 'right' }}>Volume</Text>
     </View>
   )
 }
@@ -48,6 +48,28 @@ export default class LatestTrades extends React.Component {
     this.setState({ refreshing: true })
     this.getBxData()
   }
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#CED0CE",
+        }}
+      />
+    )
+  }
+  evalTimeText = seconds => {
+    if (seconds < 60) {
+      return `${seconds} sec ago`
+    } else if (seconds < 3600) {
+      const mins = Math.floor(seconds / 60)
+      return `${mins} min ago` 
+    } else if (seconds < 86400) {
+      const hours = Math.floor(seconds / 3600)
+      return `${hours} hr ago`
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -57,9 +79,10 @@ export default class LatestTrades extends React.Component {
           data={this.state.trades.length > 0 ? this.state.trades : null}
           renderItem={({ item }) => {
             const { trade_date, seconds, rate, amount, trade_type } = item
+            const timeText = this.evalTimeText(seconds)
             return (
               <View style={styles.item}>
-                <Text style={{ flex: 1, textAlign: 'left'}} adjustsFontSizeToFit numberOfLines={1}>{seconds} seconds</Text>
+                <Text style={{ flex: 1, textAlign: 'left'}} adjustsFontSizeToFit numberOfLines={1}>{timeText}</Text>
                 <Text style={{ flex: 1, textAlign: 'center'}} adjustsFontSizeToFit numberOfLines={1}>{rate}</Text>
                 <Text style={{ flex: 1, textAlign: 'right'}} adjustsFontSizeToFit numberOfLines={1}>{amount}</Text>
               </View>
@@ -72,6 +95,7 @@ export default class LatestTrades extends React.Component {
               onRefresh={this.onRefresh}
             />
           }
+          ItemSeparatorComponent={this.renderSeparator}
         />
       </View>
     )
@@ -81,7 +105,7 @@ export default class LatestTrades extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'yellow'
+    backgroundColor: '#f9f9f9'
   },
   padding: {
     paddingLeft: '5%',
@@ -97,14 +121,16 @@ const styles = StyleSheet.create({
   },
   list: {
     width: '100%',
-    paddingTop: 10,
-    marginBottom: 10
+    // paddingTop: 10,
+    // marginBottom: 10
   },
   item: {
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
     paddingLeft: '5%',
-    paddingRight: '5%'
+    paddingRight: '5%',
+    paddingTop: 10,
+    paddingBottom: 10
   }
 })

@@ -27,18 +27,18 @@ export default class CurrencyItem extends React.Component {
     "change": PropTypes.number,
     "last_price": PropTypes.number,
     "volume_24hours": PropTypes.number,
-    // "orderbook": PropTypes.shape({
-    //   "bids": PropTypes.shape({
-    //     "total": PropTypes.number,
-    //     "volume": PropTypes.number,
-    //     "highbid": PropTypes.number
-    //   }),
-    //   "asks": PropTypes.shape({
-    //     "total": PropTypes.number,
-    //     "volume": PropTypes.number,
-    //     "highbid": PropTypes.number
-    //   })
-    // })
+    "orderbook": PropTypes.shape({
+      "bids": PropTypes.shape({
+        "total": PropTypes.number,
+        "volume": PropTypes.number,
+        "highbid": PropTypes.number
+      }),
+      "asks": PropTypes.shape({
+        "total": PropTypes.number,
+        "volume": PropTypes.number,
+        "highbid": PropTypes.number
+      })
+    }),
     "navigation": PropTypes.any,
     "setFavorite": PropTypes.func
   }

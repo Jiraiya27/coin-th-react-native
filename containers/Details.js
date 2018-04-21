@@ -4,6 +4,7 @@ import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view'
 import { getNameFromSymbol } from '../helper/bx_helper'
 import LatestTrades from '../components/LatestTrades'
 import Orders from '../components/Orders'
+import Today from '../components/Today'
 
 const initialLayout = {
   height: 0,
@@ -45,12 +46,15 @@ export default class Details extends React.Component {
   }
 
   renderScene = ({ route }) => {
-    const { pairing_id, secondary_currency, primary_currency } = this.props.navigation.state.params
+    const { pairing_id, secondary_currency, primary_currency, last_price, orderbook } = this.props.navigation.state.params
     switch (route.key) {
       case 'trade':
-        return <LatestTrades
-                  params={this.props.navigation.state.params}
-                />
+        return (
+          <View style={styles.container}>
+            <Today pairing_id={pairing_id} last_price={last_price} orderbook={orderbook}/>
+            <LatestTrades params={this.props.navigation.state.params} />
+          </View>
+        )
       case 'buy':
         return <Orders 
                   pairing_id={pairing_id}
